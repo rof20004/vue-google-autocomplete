@@ -254,5 +254,12 @@ Please note that you need to provide what method will listen (`v-on:placechanged
         }
     }
 </script>
+
+<style scoped>
+iframe {
+  width: 100% !important;
+  height: calc(100vh - 200px) !important;
+}
+</style>
 ```
 
