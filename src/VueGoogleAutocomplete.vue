@@ -44,6 +44,11 @@
           enableGeolocation: {
             type: Boolean,
             default: false
+          },
+
+          enableGetCurrentAddress: {
+            type: Boolean,
+            default: false
           }
         },
 
@@ -227,6 +232,32 @@
                       });
                     }
                 }
+            },
+
+            getAddress() {
+              if (this.enableGeolocation && this.enableGetCurrentAddress) {
+                if (navigator.geolocation) {
+                  navigator.geolocation.getCurrentPosition(position => {
+                    let geolocation = {
+                      lat: position.coords.latitude,
+                      lng: position.coords.longitude
+                    };
+                    let geocoder = new google.maps.Geocoder()
+                    let latlng = new google.maps.LatLng(geolocation.lat, geolocation.lng)
+                    geocoder.geocode({'latLng': latlng}, (results, status) => {
+                        if(status == google.maps.GeocoderStatus.OK) {
+                            if(results[0]) {
+                                this.$emit('getCurrentAddress', results[0].formatted_address)
+                            } else {
+                                console.log('No results found')
+                            }
+                        } else {
+                            console.log('Error getting address from coords')
+                        }
+                    });
+                  });
+                }
+              }
             }
         }
     }

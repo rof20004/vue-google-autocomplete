@@ -210,3 +210,49 @@ Please note that you need to provide what method will listen (`v-on:placechanged
     }
 </script>
 ```
+
+### Example with Get Current Address - (Please, check the changes, the code below is older)
+
+
+```html
+<template>
+    <div>
+        <h2>Your Address</h2>
+
+        <vue-google-autocomplete
+            id="map"
+            placeholder="Type the destiny"
+            v-on:placechanged="getAddressData"
+            country="br"
+            :enable-geolocation="true"
+            :enableGetCurrentAddress="true"
+            @getCurrentAddress="currentAddress = $event">
+        </vue-google-autocomplete>
+        <br><br>
+        <div id="map-area">
+          <iframe id="map" scrolling="no" frameborder="0" style="border:0" :src="`https://maps.google.com/maps?saddr=${this.currentAddress}&daddr=${this.address}&output=embed`" allowfullscreen></iframe>
+        </div>
+    </div>
+</template>
+
+<script>
+    import VueGoogleAutocomplete from 'vue-google-autocomplete'
+
+    export default {
+        components: { VueGoogleAutocomplete },
+        
+        data () {
+            return {
+                address: '',
+                currentAddress: ''
+            }
+        },
+        methods: {
+            getAddressData (addressData, placeResultData) {
+                this.address = placeResultData.formatted_address
+            }
+        }
+    }
+</script>
+```
+
